@@ -75,6 +75,7 @@ class MyWindow(QtWidgets.QWidget,Ui_Form):
         self.lineEdit_6.setText(wish)
         self.lineEdit_7.setText(response)
         self.spinBox.setValue(volume)
+        self.spinBox.setRange(1,10)
         self.radioButton_4.setChecked(1)
         self.radioButton_4.setDisabled(1)
         self.groupBox.setDisabled(1)
