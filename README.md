@@ -8,6 +8,7 @@
 請不要在遊戲時使用，可能被判斷為腳本  
     
 ```python
+"""程式調用win32API 例如"""
 if close in query: #關閉
   keybd_event(0x12,0,0,0) #按下ALT
   keybd_event(0x73,0,0,0) #按下F4
