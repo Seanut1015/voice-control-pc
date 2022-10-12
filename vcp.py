@@ -46,12 +46,12 @@ for i in config['user']:
     program.append(i)
 
 engine = pyttsx3.init('sapi5')
-voices = engine.getProperty('voices') #gets you the details of the current voice
-engine.setProperty('voice', voices[1].id)  # 0-male voice , 1-female voice
-rate = engine.getProperty('rate')           #設定語音速率
-engine.setProperty('rate', rate-50)         #設定語音速率
+voices = engine.getProperty('voices')
+engine.setProperty('voice', voices[1].id)
+rate = engine.getProperty('rate')           
+engine.setProperty('rate', rate-50)        
+engine.setProperty('volume',volume_f)    
 
-engine.setProperty('volume',volume_f)         #設定音量
 run = 0
 
 r = sr.Recognizer()
@@ -62,6 +62,7 @@ r.dynamic_energy_threshold = 1
 wake = 0
 
 class MyWindow(QtWidgets.QWidget,Ui_Form):
+    x = 0
     def __init__(self,parent=None):
         super(MyWindow,self).__init__(parent)
         self.setupUi(self)
@@ -77,6 +78,7 @@ class MyWindow(QtWidgets.QWidget,Ui_Form):
         self.radioButton_4.setChecked(1)
         self.radioButton_4.setDisabled(1)
         self.groupBox.setDisabled(1)
+        x = 1
 
     def change(self):
         config['wake_up']['wake_up'] = self.lineEdit.text()
@@ -94,6 +96,7 @@ class MyWindow(QtWidgets.QWidget,Ui_Form):
             user[x] = self.label_12.text()
         with open('.\config.ini', 'w',encoding="utf-8-sig") as configfile:
             config.write(configfile)
+        print(x)
 
     def reset(self):
         self.lineEdit.setText(wake_up)
@@ -186,21 +189,15 @@ def speak(audio):
 
 def takeCommand():
     with sr.Microphone(device_index = mic_id) as source:     
-        #print(r.energy_threshold)
         r.adjust_for_ambient_noise(source,0.5)
-        #print("Listening...")
         if wake == 1:
             speak('Hi')
         audio = r.listen(source)
         try:
-            #print("Recognizing...")   
-            query = r.recognize_google(audio, language='zh') #Using google for voice recognition.
-            print(f"User said: {query}\n")  #User query will be printed.    
+            query = r.recognize_google(audio, language='zh') 
+            #print(f"User said: {query}\n")   
         except Exception as e:
-            #pass
-            #print(e) # use only if you want to print the error!
-            print("Say that again please...")   #Say that again will be printed in case of improper voice 
-            return "None" #None string will be returned
+            return "None" 
         return query
 
 def wishMe():
